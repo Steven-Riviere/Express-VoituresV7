@@ -7,6 +7,6 @@ namespace ExpressVoituresDotNet.Models.Services
         Task<IEnumerable<VehicleModel>> GetAllVehicleModelsAsync();
         Task<VehicleModel?> GetVehicleModelByIdAsync(int modelId);
         Task<VehicleModel> AddNewModelAsync(string modelName, int brandId);
-        IEnumerable<VehicleBrand> GetBrandsOfModel(VehicleModel model);
+        Task<VehicleModel?> UpdateModelAsync(VehicleModel model);
     }
 }

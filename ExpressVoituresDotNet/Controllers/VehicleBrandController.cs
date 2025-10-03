@@ -51,20 +51,20 @@ namespace ExpressVoituresDotNet.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, VehicleBrand brand)
+        public async Task<IActionResult> Edit(int id, VehicleBrand vehicleBrand)
         {
-            if (id != brand.Id) return NotFound();
-            if (!ModelState.IsValid) return View(brand);
+            if (id != vehicleBrand.Id) return NotFound();
+            if (!ModelState.IsValid) return View(vehicleBrand);
 
             try
             {
-                await _vehicleBrandService.UpdateBrandAsync(brand);
+                await _vehicleBrandService.UpdateBrandAsync(vehicleBrand);
                 return RedirectToAction(nameof(Index));
             }
             catch (InvalidOperationException ex)
             {
                 ModelState.AddModelError("", ex.Message);
-                return View(brand);
+                return View(vehicleBrand);
             }
 
         }

@@ -28,7 +28,7 @@ namespace ExpressVoituresDotNet.Models.Repositories
         public async Task RemoveAsync(int brandId, int modelId)
         {
             var entity = await _context.VehicleBrandModels
-                .FirstOrDefaultAsync(vbm => vbm.VehicleBrandId == brandId && vbm.VehicleModelId == modelId);
+                .FindAsync(brandId, modelId);
 
             if (entity != null)
             {

@@ -25,13 +25,6 @@ namespace ExpressVoituresDotNet.Models.Repositories
         {
             return await _context.VehicleModels.FirstOrDefaultAsync(m => m.Model == modelName);
         }
-        public async Task<IEnumerable<VehicleModel>> GetVehicleModelsByBrandIdAsync(int brandId)
-        {
-            return await _context.VehicleBrandModels
-                                 .Where(vbm => vbm.VehicleBrandId == brandId)
-                                 .Select(vbm => vbm.VehicleModel)
-                                 .ToListAsync();
-        }
 
         public async Task AddVehicleModelAsync(VehicleModel vehicleModel)
         {
