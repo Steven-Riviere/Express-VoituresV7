@@ -58,5 +58,12 @@ namespace ExpressVoituresDotNet.Models.Repositories
         {
             return await _context.Vehicles.AnyAsync(v => v.Id == id);
         }
+
+        public async Task<bool> ValidateVehicleModelWithBrandAsync(int modelId, int brandId)
+        {
+            return await _context.VehicleBrandModels
+                .AnyAsync(bm => bm.VehicleModelId == modelId && bm.VehicleBrandId == brandId);
+        }
+
     }
 }

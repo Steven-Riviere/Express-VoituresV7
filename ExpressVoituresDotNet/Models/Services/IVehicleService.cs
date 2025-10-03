@@ -12,5 +12,7 @@ namespace ExpressVoituresDotNet.Models.Services
         Task UpdateVehicleAsync(VehicleViewModel vm);
         Task DeleteVehicleAsync(int vehicleId);
         Task<bool> VehicleExistsAsync(int vehicleId);
+        Task<bool> ValidateVehicleModelWithBrandAsync(int modelId, int brandId);
+
     }
 }

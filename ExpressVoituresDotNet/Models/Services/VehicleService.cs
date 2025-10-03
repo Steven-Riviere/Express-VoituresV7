@@ -143,5 +143,11 @@ namespace ExpressVoituresDotNet.Models.Services
         {
             return await _vehicleRepository.VehicleExistsAsync(vehicleId);
         }
+
+        public async Task<bool> ValidateVehicleModelWithBrandAsync(int modelId, int brandId)
+        {
+            return await _vehicleRepository.ValidateVehicleModelWithBrandAsync(modelId, brandId);
+        }
+
     }
 }

@@ -72,7 +72,7 @@ namespace ExpressVoituresDotNet.Controllers
         public async Task<IActionResult> Create(VehicleViewModel vm)
         {
             // Validation métier : modèle appartient à la marque
-            bool isModelValid = await _vehicleService.ValidateVehicleModelWithBrandAsync(vehicleViewModel.VehicleModelId, vehicleViewModel.VehicleBrandId);
+            bool isModelValid = await _vehicleService.ValidateVehicleModelWithBrandAsync(vm.VehicleModelId, vm.VehicleBrandId);
             if (!isModelValid)
             {
                 ModelState.AddModelError("VehicleModelId", "Le modèle sélectionné n'appartient pas à la marque choisie.");
@@ -109,6 +109,13 @@ namespace ExpressVoituresDotNet.Controllers
         {
             if (id != vm.Id)
                 return NotFound();
+
+            // Validation métier : modèle appartient à la marque
+            bool isModelValid = await _vehicleService.ValidateVehicleModelWithBrandAsync(vm.VehicleModelId, vm.VehicleBrandId);
+            if (!isModelValid)
+            {
+                ModelState.AddModelError("VehicleModelId", "Le modèle sélectionné n'appartient pas à la marque choisie.");
+            }
 
             if (!ModelState.IsValid)
             {
