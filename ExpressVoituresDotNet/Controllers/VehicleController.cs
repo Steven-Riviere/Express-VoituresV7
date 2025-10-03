@@ -15,14 +15,18 @@ namespace ExpressVoituresDotNet.Controllers
         private readonly IVehicleBrandService _vehicleBrandService;
         private readonly IVehicleModelService _vehicleModelService;
         private readonly IVehicleTrimService _vehicleTrimService;
+        private readonly IVehicleBrandModelService _vehicleBrandModelService;
+        private readonly IVehicleModelVehicleTrimService _vehicleModelVehicleTrimService;
 
-        public VehicleController(ILogger<VehicleController> logger, IVehicleService vehicleService, IVehicleBrandService vehicleBrandService, IVehicleModelService vehicleModelService, IVehicleTrimService vehicleTrimService)
+        public VehicleController(ILogger<VehicleController> logger, IVehicleService vehicleService, IVehicleBrandService vehicleBrandService, IVehicleModelService vehicleModelService, IVehicleTrimService vehicleTrimService,IVehicleBrandModelService vehicleBrandModelService,IVehicleModelVehicleTrimService vehicleModelVehicleTrimService)
         {
             _logger = logger;
             _vehicleService = vehicleService;
             _vehicleBrandService = vehicleBrandService;
             _vehicleTrimService = vehicleTrimService;
             _vehicleModelService = vehicleModelService;
+            _vehicleBrandModelService = vehicleBrandModelService;
+            _vehicleModelVehicleTrimService = vehicleModelVehicleTrimService;
         }
 
         public async Task<IActionResult> Index()
@@ -72,10 +76,14 @@ namespace ExpressVoituresDotNet.Controllers
         public async Task<IActionResult> Create(VehicleViewModel vm)
         {
             // Validation métier : modèle appartient à la marque
-            bool isModelValid = await _vehicleService.ValidateVehicleModelWithBrandAsync(vm.VehicleModelId, vm.VehicleBrandId);
-            if (!isModelValid)
+            if (!await _vehicleBrandModelService.ExistsAsync(vm.VehicleBrandId, vm.VehicleModelId))
             {
                 ModelState.AddModelError("VehicleModelId", "Le modèle sélectionné n'appartient pas à la marque choisie.");
+            }
+            // Validation métier : marque appartient à la finition
+            if (vm.VehicleTrimId.HasValue && !await _vehicleModelVehicleTrimService.ExistsAsync(vm.VehicleModelId, vm.VehicleTrimId.Value))
+            {
+                ModelState.AddModelError("VehicleTrimId", "La finition sélectionnée n'appartient pas au modèle choisi.");
             }
 
             if (!ModelState.IsValid || vm.MediaFile == null)
@@ -110,11 +118,14 @@ namespace ExpressVoituresDotNet.Controllers
             if (id != vm.Id)
                 return NotFound();
 
-            // Validation métier : modèle appartient à la marque
-            bool isModelValid = await _vehicleService.ValidateVehicleModelWithBrandAsync(vm.VehicleModelId, vm.VehicleBrandId);
-            if (!isModelValid)
+            if (!await _vehicleBrandModelService.ExistsAsync(vm.VehicleBrandId, vm.VehicleModelId))
             {
                 ModelState.AddModelError("VehicleModelId", "Le modèle sélectionné n'appartient pas à la marque choisie.");
+            }
+
+            if (vm.VehicleTrimId.HasValue && !await _vehicleModelVehicleTrimService.ExistsAsync(vm.VehicleModelId, vm.VehicleTrimId.Value))
+            {
+                ModelState.AddModelError("VehicleTrimId", "La finition sélectionnée n'appartient pas au modèle choisi.");
             }
 
             if (!ModelState.IsValid)
