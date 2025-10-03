@@ -35,14 +35,15 @@ namespace ExpressVoituresDotNet.Models.Services
             return newBrand;
         }
 
+        public async Task UpdateBrandAsync(VehicleBrand brand)
+        {
+            await _vehicleBrandRepository.UpdateVehicleBrandAsync(brand);
+        }
+
         public async Task<IEnumerable<VehicleModel>> GetModelsByBrandIdAsync(int brandId)
         {
             var brand = await _vehicleBrandRepository.GetVehicleBrandWithModelsAsync(brandId);
-
-            if (brand == null)
-                return new List<VehicleModel>();
-
-            return brand.VehicleBrandModels.Select(vbm => vbm.VehicleModel).ToList();
+            return brand?.VehicleBrandModels.Select(vbm => vbm.VehicleModel).ToList() ?? new List<VehicleModel>();
         }
     }
 }
