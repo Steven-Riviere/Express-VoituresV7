@@ -53,7 +53,7 @@ namespace ExpressVoituresDotNet.Models.Services
                 Label = vm.Label,
                 VIN = vm.VIN,
                 Description = vm.Description,
-                YearOfProductionId = vm.YearOfProductionId,
+                YearOfProduction = vm.YearOfProduction,
                 VehicleBrandId = vm.VehicleBrandId,
                 VehicleModelId = vm.VehicleModelId,
                 VehicleTrimId = vm.VehicleTrimId,
@@ -83,6 +83,7 @@ namespace ExpressVoituresDotNet.Models.Services
             vehicle.Label = vm.Label;
             vehicle.VIN = vm.VIN;
             vehicle.Description = vm.Description;
+            vehicle.YearOfProduction = vm.YearOfProduction;
             vehicle.VehicleBrandId = vm.VehicleBrandId;
             vehicle.VehicleModelId = vm.VehicleModelId;
             vehicle.VehicleTrimId = vm.VehicleTrimId;
