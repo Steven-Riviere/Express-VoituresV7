@@ -1,6 +1,6 @@
 ﻿namespace ExpressVoituresDotNet.Controllers
 {
-    public class Class
+    public class VehicleModelController
     {
     }
 }

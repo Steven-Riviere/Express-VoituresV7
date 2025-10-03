@@ -70,7 +70,7 @@ namespace ExpressVoituresDotNet.Models.Services
 
         public async Task<IEnumerable<VehicleModel>> GetVehicleModelByBrandIdAsync(int brandId)
         {
-            return await _vehicleModelRepository.GetVehicleModelsByBrandIdAsync(brandId);
+            return await _vehicleBrandModelRepository.GetModelsByBrandIdAsync(brandId);
         }
 
 
