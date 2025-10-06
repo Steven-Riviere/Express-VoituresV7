@@ -5,16 +5,21 @@ namespace ExpressVoituresDotNet.Models.Services
 {
     public class VehicleModelVehicleTrimService : IVehicleModelVehicleTrimService
     {
-        private readonly VehicleModelVehicleTrimRepository _repository;
+        private readonly IVehicleModelVehicleTrimRepository _vehicleModelVehicleTrimRepository;
 
-        public VehicleModelVehicleTrimService(VehicleModelVehicleTrimRepository repository)
+        public VehicleModelVehicleTrimService(IVehicleModelVehicleTrimRepository repository)
         {
-            _repository = repository;
+            _vehicleModelVehicleTrimRepository = repository;
+        }
+
+        public async Task<IEnumerable<VehicleModelVehicleTrim>> GetAllVehicleModeTrimlAsync()
+        {
+            return await _vehicleModelVehicleTrimRepository.GetAllVehicleModeTrimlAsync();
         }
 
         public async Task<bool> ExistsAsync(int modelId, int trimId)
         {
-            return await _repository.ExistsAsync(modelId, trimId);
+            return await _vehicleModelVehicleTrimRepository.ExistsAsync(modelId, trimId);
         }
 
         public async Task AddAsync(int modelId, int trimId)
@@ -26,23 +31,23 @@ namespace ExpressVoituresDotNet.Models.Services
                     VehicleModelId = modelId,
                     VehicleTrimId = trimId
                 };
-                await _repository.AddAsync(entity);
+                await _vehicleModelVehicleTrimRepository.AddAsync(entity);
             }
         }
 
         public async Task RemoveAsync(int modelId, int trimId)
         {
-            await _repository.RemoveAsync(modelId, trimId);
+            await _vehicleModelVehicleTrimRepository.RemoveAsync(modelId, trimId);
         }
 
         public async Task<IEnumerable<VehicleModel>> GetModelsByTrimIdAsync(int trimId)
         {
-            return await _repository.GetModelsByTrimIdAsync(trimId);
+            return await _vehicleModelVehicleTrimRepository.GetModelsByTrimIdAsync(trimId);
         }
 
         public async Task<IEnumerable<VehicleTrim>> GetTrimsByModelIdAsync(int modelId)
         {
-            return await _repository.GetTrimsByModelIdAsync(modelId);
+            return await _vehicleModelVehicleTrimRepository.GetTrimsByModelIdAsync(modelId);
         }
     }
 }

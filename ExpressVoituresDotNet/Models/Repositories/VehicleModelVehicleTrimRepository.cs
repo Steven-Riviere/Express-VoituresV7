@@ -37,7 +37,7 @@ namespace ExpressVoituresDotNet.Models.Repositories
             }
         }
 
-        public async Task<IEnumerable<VehicleModelVehicleTrim>> GetAllAsync()
+        public async Task<IEnumerable<VehicleModelVehicleTrim>> GetAllVehicleModeTrimlAsync()
         {
             return await _context.VehicleModelVehicleTrims
                 .Include(vbm => vbm.VehicleModel)
