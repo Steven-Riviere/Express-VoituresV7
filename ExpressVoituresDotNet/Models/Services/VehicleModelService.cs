@@ -22,9 +22,9 @@ namespace ExpressVoituresDotNet.Models.Services
             return await _vehicleModelRepository.GetVehicleModelByIdAsync(modelId);
         }
 
-        public async Task<VehicleModel> AddNewModelAsync(string modelName, int brandId)
+        public async Task<VehicleModel?> AddNewModelAsync(string modelName)
         {
-            var existingModel = await _vehicleModelRepository.GetVehicleModelByNameAsync(modelName);
+            VehicleModel? existingModel = await _vehicleModelRepository.GetVehicleModelByNameAsync(modelName);
             if (existingModel != null)
                 throw new InvalidOperationException("Ce modèle existe déjà.");
 

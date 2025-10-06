@@ -35,7 +35,6 @@ namespace ExpressVoituresDotNet.Controllers
             return View(vehicle);
         }
 
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             var vm = new VehicleViewModel();
@@ -50,7 +49,6 @@ namespace ExpressVoituresDotNet.Controllers
             return View(vehicle);
         }
 
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var vehicle = await _vehicleService.GetVehicleByIdAsync(id);
@@ -61,7 +59,6 @@ namespace ExpressVoituresDotNet.Controllers
             return View(vm);
         }
 
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var vehicle = await _vehicleService.GetVehicleByIdAsync(id);

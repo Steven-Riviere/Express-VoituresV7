@@ -7,7 +7,7 @@ namespace ExpressVoituresDotNet.Models.Repositories
         Task<bool> ExistsAsync(int brandId, int modelId);
         Task AddAsync(VehicleBrandModel entity);
         Task RemoveAsync(int brandId, int modelId);
-        Task<IEnumerable<VehicleBrandModel>> GetAllAsync();
+        Task<IEnumerable<VehicleBrandModel>> GetAllVehicleBrandModelAsync();
         Task<IEnumerable<VehicleModel>> GetModelsByBrandIdAsync(int brandId);
         Task<IEnumerable<VehicleBrand>> GetBrandsByModelIdAsync(int modelId);
     }
