@@ -1,5 +1,7 @@
-﻿using ExpressVoituresDotNet.Models.Entities;
+﻿using ExpressVoituresDotNet.Data.SeedData;
+using ExpressVoituresDotNet.Models.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpressVoituresDotNet.Data
@@ -62,6 +64,28 @@ namespace ExpressVoituresDotNet.Data
                 .HasOne(mt => mt.VehicleTrim)
                 .WithMany(t => t.VehicleModelVehicleTrims)
                 .HasForeignKey(mt => mt.VehicleTrimId);
+
+            modelBuilder.Entity<Vehicle>()
+                .Property(v => v.PurchasePrice)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Vehicle>()
+                .Property(v => v.SalePrice)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Repair>()
+                .Property(r => r.RepairCost)
+                .HasColumnType("decimal(18,2)");
+
+            RepairData.SeedData(modelBuilder);
+            VehicleBrandData.SeedData(modelBuilder);
+            VehicleBrandModelData.SeedData(modelBuilder);
+            VehicleData.SeedData(modelBuilder);
+            VehicleModelData.SeedData(modelBuilder);
+            VehicleModelVehicleTrimData.SeedData(modelBuilder);
+            VehicleTrimData.SeedData(modelBuilder);
+
+
         }
     }
 }
