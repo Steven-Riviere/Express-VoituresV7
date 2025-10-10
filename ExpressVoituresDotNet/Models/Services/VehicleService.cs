@@ -17,12 +17,29 @@ namespace ExpressVoituresDotNet.Models.Services
             _vehicleModelRepository = vehicleModelRepository;
             _vehicleBrandRepository = vehicleBrandRepository;
             _vehicleBrandModelRepository = vehicleBrandModelRepository;
-            _vehicleBrandModelRepository = vehicleBrandModelRepository;
         }
 
-        public async Task<IEnumerable<Vehicle>> GetAllVehiclesAsync()
+        public async Task<IEnumerable<VehicleViewModel>> GetAllVehiclesAsync()
         {
-            return await _vehicleRepository.GetAllVehiclesAsync();
+            var vehicles = await _vehicleRepository.GetAllVehiclesAsync();
+            return vehicles.Select(v => new VehicleViewModel
+            {
+                Id = v.Id,
+                Label = v.Label,
+                VIN = v.VIN,
+                Description = v.Description,
+                YearOfProduction = v.YearOfProduction,
+                Purchase = v.Purchase,
+                PurchasePrice = v.PurchasePrice,
+                BrandName = v.VehicleBrand?.Brand,
+                ModelName = v.VehicleModel?.Model,
+                TrimName = v.VehicleTrim?.TrimLabel,
+                Status = v.Status,
+                Sale = v.Sale,
+                SalePrice = v.SalePrice,
+                MediaPath = v.MediaPath,
+                MediaLabel = v.MediaLabel
+            }).ToList();
         }
 
         public async Task<Vehicle?> GetVehicleByIdAsync(int vehicleId)
@@ -92,17 +109,13 @@ namespace ExpressVoituresDotNet.Models.Services
 
             if (vm.RepairDate.HasValue || vm.RepairCost.HasValue || !string.IsNullOrEmpty(vm.RepairDescription))
             {
-                if (vehicle.Repair == null) vehicle.Repair = new Repair { VehicleId = vehicle.Id };
+                vehicle.Repair ??= new Repair { VehicleId = vehicle.Id };
 
-                if (vm.RepairDate.HasValue)
-                    vehicle.Repair.RepairDate = vm.RepairDate.Value;
-
-                if (vm.RepairCost.HasValue)
-                    vehicle.Repair.RepairCost = vm.RepairCost.Value;
-
-                if (!string.IsNullOrEmpty(vm.RepairDescription))
-                    vehicle.Repair.Description = vm.RepairDescription;
+                vehicle.Repair.RepairDate = vm.RepairDate ?? vehicle.Repair.RepairDate;
+                vehicle.Repair.RepairCost = vm.RepairCost ?? vehicle.Repair.RepairCost;
+                vehicle.Repair.Description = vm.RepairDescription ?? vehicle.Repair.Description;
             }
+
 
             var exists = await _vehicleBrandModelRepository.ExistsAsync(vm.VehicleBrandId, vm.VehicleModelId);
             if (!exists)
@@ -113,11 +126,7 @@ namespace ExpressVoituresDotNet.Models.Services
             {
                 vehicle.SalePrice = vm.SalePrice;
                 vehicle.Sale = vm.Sale;
-
-                if (vm.Sale.HasValue)
-                    vehicle.Status = VehicleStatus.Vendu;
-                else
-                    vehicle.Status = VehicleStatus.Disponible;
+                vehicle.Status = vm.Sale.HasValue ? VehicleStatus.Vendu : VehicleStatus.Disponible;
             }
 
             if (vm.MediaFile != null)

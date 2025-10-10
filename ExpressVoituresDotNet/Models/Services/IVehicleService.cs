@@ -5,7 +5,7 @@ namespace ExpressVoituresDotNet.Models.Services
 {
     public interface IVehicleService
     {
-        Task<IEnumerable<Vehicle>> GetAllVehiclesAsync();
+        Task<IEnumerable<VehicleViewModel>> GetAllVehiclesAsync();
         Task<Vehicle?> GetVehicleByIdAsync(int vehicleId);
         Task<Vehicle> AddVehicleAsync(VehicleViewModel vm);
         Task<IEnumerable<VehicleModel>> GetVehicleModelByBrandIdAsync(int brandId);

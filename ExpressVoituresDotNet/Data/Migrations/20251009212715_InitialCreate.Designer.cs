@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpressVoituresDotNet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251009211344_UpdateData")]
-    partial class UpdateData
+    [Migration("20251009212715_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,6 +52,72 @@ namespace ExpressVoituresDotNet.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Repairs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Repair description 1",
+                            RepairCost = 500.00m,
+                            RepairDate = new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VehicleId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Repair description 2",
+                            RepairCost = 700.00m,
+                            RepairDate = new DateTime(2023, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VehicleId = 3
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Repair description 3",
+                            RepairCost = 600.00m,
+                            RepairDate = new DateTime(2023, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VehicleId = 4
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Repair description 4",
+                            RepairCost = 800.00m,
+                            RepairDate = new DateTime(2023, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VehicleId = 5
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Repair description 5",
+                            RepairCost = 900.00m,
+                            RepairDate = new DateTime(2023, 7, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VehicleId = 6
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Repair description 6",
+                            RepairCost = 1000.00m,
+                            RepairDate = new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VehicleId = 7
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "Repair description 7",
+                            RepairCost = 1100.00m,
+                            RepairDate = new DateTime(2023, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VehicleId = 8
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Description = "Repair description 8",
+                            RepairCost = 1200.00m,
+                            RepairDate = new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VehicleId = 10
+                        });
                 });
 
             modelBuilder.Entity("ExpressVoituresDotNet.Models.Entities.Vehicle", b =>
@@ -117,6 +183,174 @@ namespace ExpressVoituresDotNet.Data.Migrations
                     b.HasIndex("VehicleTrimId");
 
                     b.ToTable("Vehicles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Vehicle description 1",
+                            Label = "Vehicle 1",
+                            MediaLabel = "CE.png",
+                            MediaPath = "/images/vehicles/CE.png",
+                            Purchase = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PurchasePrice = 15000m,
+                            Status = 1,
+                            VIN = "1HGCM82633A123001",
+                            VehicleBrandId = 1,
+                            VehicleModelId = 1,
+                            VehicleTrimId = 1,
+                            YearOfProduction = 2020
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Vehicle description 2",
+                            Label = "Vehicle 2",
+                            MediaLabel = "CE.png",
+                            MediaPath = "/images/vehicles/CE.png",
+                            Purchase = new DateTime(2021, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PurchasePrice = 18000m,
+                            Status = 0,
+                            VIN = "1HGCM82633A123002",
+                            VehicleBrandId = 2,
+                            VehicleModelId = 2,
+                            VehicleTrimId = 1,
+                            YearOfProduction = 2021
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Vehicle description 3",
+                            Label = "Vehicle 3",
+                            MediaLabel = "CE.png",
+                            MediaPath = "/images/vehicles/CE.png",
+                            Purchase = new DateTime(2019, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PurchasePrice = 16000m,
+                            Sale = new DateTime(2020, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SalePrice = 16500m,
+                            Status = 2,
+                            VIN = "1HGCM82633A123003",
+                            VehicleBrandId = 3,
+                            VehicleModelId = 3,
+                            VehicleTrimId = 2,
+                            YearOfProduction = 2019
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Vehicle description 4",
+                            Label = "Vehicle 4",
+                            MediaLabel = "CE.png",
+                            MediaPath = "/images/vehicles/CE.png",
+                            Purchase = new DateTime(2022, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PurchasePrice = 20000m,
+                            Status = 1,
+                            VIN = "1HGCM82633A123004",
+                            VehicleBrandId = 4,
+                            VehicleModelId = 4,
+                            VehicleTrimId = 3,
+                            YearOfProduction = 2022
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Vehicle description 5",
+                            Label = "Vehicle 5",
+                            MediaLabel = "CE.png",
+                            MediaPath = "/images/vehicles/CE.png",
+                            Purchase = new DateTime(2018, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PurchasePrice = 14000m,
+                            Sale = new DateTime(2019, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SalePrice = 14500m,
+                            Status = 2,
+                            VIN = "1HGCM82633A123005",
+                            VehicleBrandId = 5,
+                            VehicleModelId = 5,
+                            VehicleTrimId = 4,
+                            YearOfProduction = 2018
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Vehicle description 6",
+                            Label = "Vehicle 6",
+                            MediaLabel = "CE.png",
+                            MediaPath = "/images/vehicles/CE.png",
+                            Purchase = new DateTime(2021, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PurchasePrice = 22000m,
+                            Status = 1,
+                            VIN = "1HGCM82633A123006",
+                            VehicleBrandId = 6,
+                            VehicleModelId = 6,
+                            VehicleTrimId = 5,
+                            YearOfProduction = 2021
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "Vehicle description 7",
+                            Label = "Vehicle 7",
+                            MediaLabel = "CE.png",
+                            MediaPath = "/images/vehicles/CE.png",
+                            Purchase = new DateTime(2020, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PurchasePrice = 13000m,
+                            Status = 1,
+                            VIN = "1HGCM82633A123007",
+                            VehicleBrandId = 7,
+                            VehicleModelId = 7,
+                            VehicleTrimId = 6,
+                            YearOfProduction = 2020
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Description = "Vehicle description 8",
+                            Label = "Vehicle 8",
+                            MediaLabel = "CE.png",
+                            MediaPath = "/images/vehicles/CE.png",
+                            Purchase = new DateTime(2019, 11, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PurchasePrice = 15500m,
+                            Sale = new DateTime(2020, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SalePrice = 16000m,
+                            Status = 2,
+                            VIN = "1HGCM82633A123008",
+                            VehicleBrandId = 8,
+                            VehicleModelId = 8,
+                            VehicleTrimId = 7,
+                            YearOfProduction = 2019
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Description = "Vehicle description 9",
+                            Label = "Vehicle 9",
+                            MediaLabel = "CE.png",
+                            MediaPath = "/images/vehicles/CE.png",
+                            Purchase = new DateTime(2022, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PurchasePrice = 17500m,
+                            Status = 0,
+                            VIN = "1HGCM82633A123009",
+                            VehicleBrandId = 9,
+                            VehicleModelId = 9,
+                            VehicleTrimId = 8,
+                            YearOfProduction = 2022
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Description = "Vehicle description 10",
+                            Label = "Vehicle 10",
+                            MediaLabel = "CE.png",
+                            MediaPath = "/images/vehicles/CE.png",
+                            Purchase = new DateTime(2021, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PurchasePrice = 19000m,
+                            Status = 1,
+                            VIN = "1HGCM82633A123010",
+                            VehicleBrandId = 10,
+                            VehicleModelId = 10,
+                            VehicleTrimId = 9,
+                            YearOfProduction = 2021
+                        });
                 });
 
             modelBuilder.Entity("ExpressVoituresDotNet.Models.Entities.VehicleBrand", b =>
@@ -134,6 +368,63 @@ namespace ExpressVoituresDotNet.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("VehicleBrands");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Brand = "Toyota"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Brand = "Ford"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Brand = "Honda"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Brand = "Chevrolet"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Brand = "Nissan"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Brand = "Volkswagen"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Brand = "Renault"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Brand = "Peugeot"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Brand = "Citroën"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Brand = "Jeep"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Brand = "Mazda"
+                        });
                 });
 
             modelBuilder.Entity("ExpressVoituresDotNet.Models.Entities.VehicleBrandModel", b =>
@@ -149,6 +440,63 @@ namespace ExpressVoituresDotNet.Data.Migrations
                     b.HasIndex("VehicleModelId");
 
                     b.ToTable("VehicleBrandModels");
+
+                    b.HasData(
+                        new
+                        {
+                            VehicleBrandId = 1,
+                            VehicleModelId = 1
+                        },
+                        new
+                        {
+                            VehicleBrandId = 2,
+                            VehicleModelId = 2
+                        },
+                        new
+                        {
+                            VehicleBrandId = 3,
+                            VehicleModelId = 3
+                        },
+                        new
+                        {
+                            VehicleBrandId = 4,
+                            VehicleModelId = 4
+                        },
+                        new
+                        {
+                            VehicleBrandId = 5,
+                            VehicleModelId = 5
+                        },
+                        new
+                        {
+                            VehicleBrandId = 6,
+                            VehicleModelId = 6
+                        },
+                        new
+                        {
+                            VehicleBrandId = 7,
+                            VehicleModelId = 7
+                        },
+                        new
+                        {
+                            VehicleBrandId = 8,
+                            VehicleModelId = 8
+                        },
+                        new
+                        {
+                            VehicleBrandId = 9,
+                            VehicleModelId = 9
+                        },
+                        new
+                        {
+                            VehicleBrandId = 10,
+                            VehicleModelId = 10
+                        },
+                        new
+                        {
+                            VehicleBrandId = 11,
+                            VehicleModelId = 11
+                        });
                 });
 
             modelBuilder.Entity("ExpressVoituresDotNet.Models.Entities.VehicleModel", b =>
@@ -166,6 +514,63 @@ namespace ExpressVoituresDotNet.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("VehicleModels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Model = "Corolla"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Model = "Focus"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Model = "Civic"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Model = "Impala"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Model = "Altima"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Model = "Golf"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Model = "Clio"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Model = "208"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Model = "C3"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Model = "Wrangler"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Model = "CX-5"
+                        });
                 });
 
             modelBuilder.Entity("ExpressVoituresDotNet.Models.Entities.VehicleModelVehicleTrim", b =>
@@ -181,6 +586,53 @@ namespace ExpressVoituresDotNet.Data.Migrations
                     b.HasIndex("VehicleTrimId");
 
                     b.ToTable("VehicleModelVehicleTrims");
+
+                    b.HasData(
+                        new
+                        {
+                            VehicleModelId = 1,
+                            VehicleTrimId = 1
+                        },
+                        new
+                        {
+                            VehicleModelId = 1,
+                            VehicleTrimId = 2
+                        },
+                        new
+                        {
+                            VehicleModelId = 2,
+                            VehicleTrimId = 1
+                        },
+                        new
+                        {
+                            VehicleModelId = 2,
+                            VehicleTrimId = 3
+                        },
+                        new
+                        {
+                            VehicleModelId = 3,
+                            VehicleTrimId = 2
+                        },
+                        new
+                        {
+                            VehicleModelId = 3,
+                            VehicleTrimId = 4
+                        },
+                        new
+                        {
+                            VehicleModelId = 4,
+                            VehicleTrimId = 3
+                        },
+                        new
+                        {
+                            VehicleModelId = 4,
+                            VehicleTrimId = 5
+                        },
+                        new
+                        {
+                            VehicleModelId = 5,
+                            VehicleTrimId = 4
+                        });
                 });
 
             modelBuilder.Entity("ExpressVoituresDotNet.Models.Entities.VehicleTrim", b =>
@@ -198,6 +650,53 @@ namespace ExpressVoituresDotNet.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("VehicleTrims");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            TrimLabel = "Base"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            TrimLabel = "SE"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            TrimLabel = "LE"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            TrimLabel = "S"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            TrimLabel = "SE"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            TrimLabel = "Titanium"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            TrimLabel = "LX"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            TrimLabel = "EX"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            TrimLabel = "Touring"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

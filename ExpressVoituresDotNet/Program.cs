@@ -107,7 +107,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Vehicles}/{action=Index}/{id?}");
+    pattern: "{controller=Vehicle}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 app.Run();
