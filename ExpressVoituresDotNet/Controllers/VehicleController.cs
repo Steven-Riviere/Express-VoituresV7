@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ExpressVoituresDotNet.Models.Entities;
 using ExpressVoituresDotNet.Models.Services;
 using ExpressVoituresDotNet.Models.ViewModels;
+using Microsoft.CodeAnalysis.Differencing;
 
 namespace ExpressVoituresDotNet.Controllers
 {
@@ -37,8 +38,7 @@ namespace ExpressVoituresDotNet.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var vm = new VehicleViewModel();
-            await PopulateViewModelSelectListsAsync(vm);
+            var vm = await PopulateViewModelSelectListsAsync(new VehicleViewModel());
             return View(vm);
         }
 
@@ -46,7 +46,9 @@ namespace ExpressVoituresDotNet.Controllers
         {
             var vehicle = await _vehicleService.GetVehicleByIdAsync(id);
             if (vehicle == null) return NotFound();
-            return View(vehicle);
+
+            var vm = MapVehicleToViewModel(vehicle);
+            return View(vm);
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -59,11 +61,23 @@ namespace ExpressVoituresDotNet.Controllers
             return View(vm);
         }
 
+        public async Task<IActionResult> EditConfirmation(int id)
+        {
+            var vehicle = await _vehicleService.GetVehicleByIdAsync(id);
+            if (vehicle == null) return NotFound();
+
+            var vm = MapVehicleToViewModel(vehicle);
+            return View(vm);
+        }
+
+
         public async Task<IActionResult> Delete(int id)
         {
             var vehicle = await _vehicleService.GetVehicleByIdAsync(id);
             if (vehicle == null) return NotFound();
-            return View(vehicle);
+
+            var vm = MapVehicleToViewModel(vehicle);
+            return View(vm);
         }
 
 
@@ -72,23 +86,19 @@ namespace ExpressVoituresDotNet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VehicleViewModel vm)
         {
-            // Validation métier : modèle appartient à la marque
-            if (!await _vehicleBrandModelService.ExistsAsync(vm.VehicleBrandId, vm.VehicleModelId))
+            if (!await ValidateVehicleRelationsAsync(vm))
             {
-                ModelState.AddModelError("VehicleModelId", "Le modèle sélectionné n'appartient pas à la marque choisie.");
-            }
-            // Validation métier : marque appartient à la finition
-            if (vm.VehicleTrimId.HasValue && !await _vehicleModelVehicleTrimService.ExistsAsync(vm.VehicleModelId, vm.VehicleTrimId.Value))
-            {
-                ModelState.AddModelError("VehicleTrimId", "La finition sélectionnée n'appartient pas au modèle choisi.");
+                await PopulateViewModelSelectListsAsync(vm);
+                return View(vm);
             }
 
-            if (!ModelState.IsValid || vm.MediaFile == null)
-            {
-                if (vm.MediaFile == null)
-                    ModelState.AddModelError("MediaFile", "Une image est obligatoire.");
+            // Validation métier : au moins une image
+            if (vm.MediaFile == null)
+                ModelState.AddModelError("MediaFile", "Une image est requise pour la création du véhicule.");
 
-                LogModelStateErrors();
+
+            if (!ModelState.IsValid)
+            {
                 await PopulateViewModelSelectListsAsync(vm);
                 return View(vm);
             }
@@ -115,19 +125,14 @@ namespace ExpressVoituresDotNet.Controllers
             if (id != vm.Id)
                 return NotFound();
 
-            if (!await _vehicleBrandModelService.ExistsAsync(vm.VehicleBrandId, vm.VehicleModelId))
+            if (!await ValidateVehicleRelationsAsync(vm))
             {
-                ModelState.AddModelError("VehicleModelId", "Le modèle sélectionné n'appartient pas à la marque choisie.");
-            }
-
-            if (vm.VehicleTrimId.HasValue && !await _vehicleModelVehicleTrimService.ExistsAsync(vm.VehicleModelId, vm.VehicleTrimId.Value))
-            {
-                ModelState.AddModelError("VehicleTrimId", "La finition sélectionnée n'appartient pas au modèle choisi.");
+                await PopulateViewModelSelectListsAsync(vm);
+                return View(vm);
             }
 
             if (!ModelState.IsValid)
             {
-                LogModelStateErrors();
                 await PopulateViewModelSelectListsAsync(vm);
                 return View(vm);
             }
@@ -135,7 +140,7 @@ namespace ExpressVoituresDotNet.Controllers
             try
             {
                 await _vehicleService.UpdateVehicleAsync(vm);
-                return View("EditConfirmation", vm);
+                return RedirectToAction("EditConfirmation", new { id = vm.Id });
             }
             catch (Exception ex)
             {
@@ -146,6 +151,8 @@ namespace ExpressVoituresDotNet.Controllers
             }
         }
 
+
+
         [HttpPost, ActionName("Delete")]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
@@ -155,13 +162,28 @@ namespace ExpressVoituresDotNet.Controllers
             if (vehicle != null)
                 await _vehicleService.DeleteVehicleAsync(id);
 
-            return View("DeleteConfirmation", vehicle);
+            var vm = vehicle != null ? MapVehicleToViewModel(vehicle) : null;
+            return View("DeleteConfirmation", vm);
         }
 
-        private void LogModelStateErrors()
+        private async Task<bool> ValidateVehicleRelationsAsync(VehicleViewModel vm)
         {
-            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                _logger.LogError(error.ErrorMessage);
+            bool valid = true;
+
+            if (!await _vehicleBrandModelService.ExistsAsync(vm.VehicleBrandId, vm.VehicleModelId))
+            {
+                ModelState.AddModelError("VehicleModelId", "Le modèle sélectionné n'appartient pas à la marque choisie.");
+                valid = false;
+            }
+
+            if (vm.VehicleTrimId.HasValue &&
+                !await _vehicleModelVehicleTrimService.ExistsAsync(vm.VehicleModelId, vm.VehicleTrimId.Value))
+            {
+                ModelState.AddModelError("VehicleTrimId", "La finition sélectionnée n'appartient pas au modèle choisi.");
+                valid = false;
+            }
+
+            return valid;
         }
 
         private VehicleViewModel MapVehicleToViewModel(Vehicle vehicle)
@@ -189,18 +211,16 @@ namespace ExpressVoituresDotNet.Controllers
             };
         }
 
-        private async Task<VehicleViewModel> PopulateViewModelSelectListsAsync(VehicleViewModel? viewModel = null)
+        private async Task<VehicleViewModel> PopulateViewModelSelectListsAsync(VehicleViewModel viewModel)
         {
-            viewModel ??= new VehicleViewModel();
+            viewModel.VehicleBrands = new SelectList(await _vehicleBrandService.GetAllVehicleBrandsAsync(), "Id", "Brand", viewModel.VehicleBrandId);
+            viewModel.VehicleModels = new SelectList(await _vehicleModelService.GetAllVehicleModelsAsync(), "Id", "Model", viewModel.VehicleModelId);
+            viewModel.VehicleTrims = new SelectList(await _vehicleTrimService.GetAllVehicleTrimsAsync(), "Id", "TrimLabel", viewModel.VehicleTrimId);
 
-            var brands = await _vehicleBrandService.GetAllVehicleBrandsAsync();
-            var models = await _vehicleModelService.GetAllVehicleModelsAsync();
-            var trims = await _vehicleTrimService.GetAllVehicleTrimsAsync();
+            var years = Enumerable.Range(1990, DateTime.Now.Year - 1990 + 1)
+                                  .Select(y => new { Value = y, Text = y.ToString() });
 
-            viewModel.VehicleBrands = new SelectList(brands, "Id", "Brand", viewModel.VehicleBrandId);
-            viewModel.VehicleModels = new SelectList(models, "Id", "Model", viewModel.VehicleModelId);
-            viewModel.VehicleTrims = new SelectList(trims, "Id", "TrimLabel", viewModel.VehicleTrimId);
-
+            viewModel.YearsOfProduction = new SelectList(years, "Value", "Text", viewModel.YearOfProduction);
             return viewModel;
         }
     }

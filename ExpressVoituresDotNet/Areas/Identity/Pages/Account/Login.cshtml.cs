@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace P5CreateFirstAppDotNet.Areas.Identity.Pages.Account
+namespace ExpressVoituresDotNet.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {

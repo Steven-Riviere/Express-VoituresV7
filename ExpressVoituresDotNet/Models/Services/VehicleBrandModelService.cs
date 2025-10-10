@@ -40,6 +40,12 @@ namespace ExpressVoituresDotNet.Models.Services
         {
             return await _vehicleBrandModelRepository.ExistsAsync(brandId, modelId);
         }
+
+        public async Task<IEnumerable<VehicleModel>> GetModelsByBrandIdAsync(int brandId)
+        {
+            return await _vehicleBrandModelRepository.GetModelsByBrandIdAsync(brandId);
+        }
+
     }
 
 }

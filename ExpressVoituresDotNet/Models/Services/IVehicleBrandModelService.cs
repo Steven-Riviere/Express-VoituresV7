@@ -8,6 +8,7 @@ namespace ExpressVoituresDotNet.Models.Services
         Task AddBrandModelAsync(int brandId, int modelId);
         Task RemoveBrandModelAsync(int brandId, int modelId);
         Task<bool> ExistsAsync(int brandId, int modelId);
+        Task<IEnumerable<VehicleModel>> GetModelsByBrandIdAsync(int brandId);
     }
 
 }

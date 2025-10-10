@@ -58,6 +58,7 @@ namespace ExpressVoituresDotNet.Models.Services
 
             var uniqueFileName = $"{Guid.NewGuid()}_{vm.MediaFile.FileName}";
             var mediaPath = Path.Combine("wwwroot/images/vehicles", uniqueFileName);
+
             using var stream = new FileStream(mediaPath, FileMode.Create);
             await vm.MediaFile.CopyToAsync(stream);
 
@@ -110,12 +111,10 @@ namespace ExpressVoituresDotNet.Models.Services
             if (vm.RepairDate.HasValue || vm.RepairCost.HasValue || !string.IsNullOrEmpty(vm.RepairDescription))
             {
                 vehicle.Repair ??= new Repair { VehicleId = vehicle.Id };
-
                 vehicle.Repair.RepairDate = vm.RepairDate ?? vehicle.Repair.RepairDate;
                 vehicle.Repair.RepairCost = vm.RepairCost ?? vehicle.Repair.RepairCost;
                 vehicle.Repair.Description = vm.RepairDescription ?? vehicle.Repair.Description;
             }
-
 
             var exists = await _vehicleBrandModelRepository.ExistsAsync(vm.VehicleBrandId, vm.VehicleModelId);
             if (!exists)
@@ -129,12 +128,19 @@ namespace ExpressVoituresDotNet.Models.Services
                 vehicle.Status = vm.Sale.HasValue ? VehicleStatus.Vendu : VehicleStatus.Disponible;
             }
 
-            if (vm.MediaFile != null)
+            if (vm.MediaFile != null && vm.MediaFile.Length > 0)
             {
                 var uniqueFileName = $"{Guid.NewGuid()}_{vm.MediaFile.FileName}";
-                var mediaPath = Path.Combine("wwwroot/images/vehicles", uniqueFileName);
-                using var stream = new FileStream(mediaPath, FileMode.Create);
-                await vm.MediaFile.CopyToAsync(stream);
+                var filePath = Path.Combine("wwwroot/images/vehicles", uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await vm.MediaFile.CopyToAsync(stream);
+                }
+
+                var oldFilePath = Path.Combine("wwwroot", vehicle.MediaPath.TrimStart('/'));
+                if (System.IO.File.Exists(oldFilePath))
+                    System.IO.File.Delete(oldFilePath);
 
                 vehicle.MediaPath = "/images/vehicles/" + uniqueFileName;
                 vehicle.MediaLabel = vm.MediaFile.FileName;

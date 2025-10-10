@@ -48,8 +48,7 @@ namespace ExpressVoituresDotNet.Models.ViewModels
         public string MediaLabel { get; set; } = null!;
         [BindNever]
         public string MediaPath { get; set; } = null!;
-        [Required(ErrorMessage = "Une image est obligatoire.")]
-        public IFormFile MediaFile { get; set; } = null!;
+        public IFormFile? MediaFile { get; set; }
 
         // Infos liées (non bindées, juste pour affichage)
         [BindNever]

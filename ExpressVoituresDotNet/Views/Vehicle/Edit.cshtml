@@ -61,7 +61,9 @@
         <!-- Modèle -->
         <div class="form-group mb-3">
             <label asp-for="VehicleModelId" class="form-label">Modèle</label>
-            <select asp-for="VehicleModelId" asp-items="Model.VehicleModels" class="form-select"></select>
+            <select asp-for="VehicleModelId" asp-items="Model.VehicleModels"
+                    class="form-select" data-selected-id="@Model.VehicleModelId"></select>
+
             <span asp-validation-for="VehicleModelId" class="text-danger"></span>
         </div>
         <a asp-controller="" asp-action="" class="btn btn-secondary ms-2">Ajouter un modèle</a>
@@ -131,4 +133,38 @@
 @section Scripts {
     <partial name="_scripts" />
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            const brandSelect = document.querySelector("select[name='VehicleBrandId']");
+            const modelSelect = document.querySelector("select[name='VehicleModelId']");
+            const currentModelId = modelSelect.getAttribute("data-selected-id");
+
+            async function loadModelsForBrand(brandId, selectedModelId = null) {
+                if (!brandId) return;
+                const response = await fetch(`/VehicleBrandVehicleModel/GetModelsByBrand?brandId=${brandId}`);
+                const models = await response.json();
+
+                modelSelect.innerHTML = "";
+                models.forEach(model => {
+                    const option = document.createElement("option");
+                    option.value = model.id;
+                    option.textContent = model.name;
+                    if (selectedModelId && model.id == selectedModelId) option.selected = true;
+                    modelSelect.appendChild(option);
+                });
+            }
+
+            // Si une marque est déjà sélectionnée au chargement, on charge les modèles correspondants
+            if (brandSelect.value) {
+                await loadModelsForBrand(brandSelect.value, currentModelId);
+            }
+
+            // Quand l’utilisateur change de marque
+            brandSelect.addEventListener("change", async function() {
+                await loadModelsForBrand(this.value);
+            });
+        });
+
+    </script>
 }

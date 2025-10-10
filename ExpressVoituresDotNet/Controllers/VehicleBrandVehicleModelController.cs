@@ -18,6 +18,14 @@ namespace ExpressVoituresDotNet.Controllers
             _modelService = modelService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetModelsByBrand(int brandId)
+        {
+            var models = await _brandModelService.GetModelsByBrandIdAsync(brandId);
+            return Json(models.Select(m => new { id = m.Id, name = m.Model }));
+        }
+
+
         public async Task<IActionResult> Index()
         {
             var associations = await _brandModelService.GetAllVehicleBrandModelAsync();
