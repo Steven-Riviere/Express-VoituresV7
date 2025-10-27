@@ -77,6 +77,7 @@ namespace ExpressVoituresDotNet.Controllers
         }
 
 
+
         public async Task<IActionResult> Delete(int id)
         {
             var vehicle = await _vehicleService.GetVehicleByIdAsync(id);
@@ -156,7 +157,7 @@ namespace ExpressVoituresDotNet.Controllers
             try
             {
                 await _vehicleService.UpdateVehicleAsync(vm);
-                return RedirectToAction(nameof(EditConfirmation));
+                return RedirectToAction(nameof(EditConfirmation), new { id = vm.Id });
             }
             catch (Exception ex)
             {
