@@ -36,7 +36,7 @@
 
                 <div class="form-group mb-3">
                     <label asp-for="VehicleBrandId" class="form-label">Marque de la voiture <span aria-hidden="true" class="text-danger">*</span></label>
-                    <select asp-for="VehicleBrandId" class="form-select" asp-items="Model.VehicleBrands" id="CarBrandId" aria-required="true" aria-describedby="VehicleBrandIdError"></select>
+                    <select asp-for="VehicleBrandId" class="form-select" asp-items="Model.VehicleBrands" id="VehicleBrandId" aria-required="true" aria-describedby="VehicleBrandIdError"></select>
                     <span asp-validation-for="VehicleBrandId" class="text-danger" id="VehicleBrandIdError" role="alert"></span>
                 </div>
 
@@ -66,7 +66,7 @@
 
                 <div class="form-group mb-3">
                     <label for="MediaFile" class="form-label">Ajoutez une image <span aria-hidden="true" class="text-danger">*</span></label>
-                    <input type="file" asp-for="MediaFile" multiple class="form-control" aria-describedby="MediaFilesError" />
+                    <input type="file" asp-for="MediaFile" class="form-control" aria-describedby="MediaFilesError" />
                     <span asp-validation-for="MediaFile" class="text-danger" id="MediaFilesError" role="alert"></span>
                 </div>
 

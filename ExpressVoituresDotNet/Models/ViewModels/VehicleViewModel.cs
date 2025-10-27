@@ -45,9 +45,9 @@ namespace ExpressVoituresDotNet.Models.ViewModels
 
         // Info média unique
         [BindNever]
-        public string MediaLabel { get; set; } = null!;
+        public string? MediaLabel { get; set; }
         [BindNever]
-        public string MediaPath { get; set; } = null!;
+        public string? MediaPath { get; set; }
         public IFormFile? MediaFile { get; set; }
 
         // Infos liées (non bindées, juste pour affichage)

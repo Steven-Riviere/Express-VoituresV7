@@ -42,6 +42,12 @@ namespace ExpressVoituresDotNet.Controllers
             return View(vm);
         }
 
+        public IActionResult CreateConfirmation()
+        {
+            return View();
+        }
+
+
         public async Task<IActionResult> Details(int id)
         {
             var vehicle = await _vehicleService.GetVehicleByIdAsync(id);
@@ -86,27 +92,37 @@ namespace ExpressVoituresDotNet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VehicleViewModel vm)
         {
+            _logger.LogInformation("➡️ Début du POST Create véhicule");
+
             if (!await ValidateVehicleRelationsAsync(vm))
             {
+                _logger.LogWarning("❌ Relations marque/modèle invalides");
                 await PopulateViewModelSelectListsAsync(vm);
                 return View(vm);
             }
 
             // Validation métier : au moins une image
             if (vm.MediaFile == null)
+            {
                 ModelState.AddModelError("MediaFile", "Une image est requise pour la création du véhicule.");
-
+                _logger.LogWarning("❌ Aucune image n’a été fournie.");
+            }
 
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("❌ ModelState invalide : {errors}",
+                string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
+
                 await PopulateViewModelSelectListsAsync(vm);
                 return View(vm);
             }
 
             try
             {
+                _logger.LogInformation("✅ Validation réussie — on tente d’ajouter le véhicule...");
                 await _vehicleService.AddVehicleAsync(vm);
-                return View("CreateConfirmation", vm);
+                _logger.LogInformation("✅ Véhicule ajouté avec succès !");
+                return RedirectToAction(nameof(CreateConfirmation));
             }
             catch (Exception ex)
             {
