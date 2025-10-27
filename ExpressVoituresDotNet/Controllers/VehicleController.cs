@@ -156,7 +156,7 @@ namespace ExpressVoituresDotNet.Controllers
             try
             {
                 await _vehicleService.UpdateVehicleAsync(vm);
-                return RedirectToAction("EditConfirmation", new { id = vm.Id });
+                return RedirectToAction(nameof(EditConfirmation));
             }
             catch (Exception ex)
             {
@@ -223,7 +223,11 @@ namespace ExpressVoituresDotNet.Controllers
                 RepairCost = vehicle.Repair?.RepairCost,
                 RepairDescription = vehicle.Repair?.Description,
                 MediaLabel = vehicle.MediaLabel,
-                MediaPath = vehicle.MediaPath
+                MediaPath = vehicle.MediaPath,
+
+                BrandName = vehicle.VehicleBrand?.Brand,
+                ModelName = vehicle.VehicleModel?.Model,
+                TrimName = vehicle.VehicleTrim?.TrimLabel
             };
         }
 
